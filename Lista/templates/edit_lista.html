@@ -1,0 +1,38 @@
+{% extends 'main.html' %}
+
+{% block content %}
+Editar Lista: <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#ModalList" onclick="showModal()"><i class="fa fa-plus"></i></button>
+<ul>
+  {% for lista in listas %}
+  <li> <a href="{% url 'add_lista' %}">{{lista.nome}} {{lista.id}} </a> -
+       <a class="btn btn-outline-danger" href="{% url 'edit_lista' pk=lista.id %}">Editar</a>
+  </li>
+  {% endfor %}
+</ul>
+
+<div class="modal fade" id="ModalList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Editar Lista {{ lista.nome }}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/edit_lista/{{pk}}/" method="post">
+          {% csrf_token %}
+          <label for="id"> Id:</label>
+          <input id="id" type="text" name="nome" value="">
+          <label for="nome"> Nome:</label>
+          <input id="nome" type="text" name="nome" value="">
+          <input type="submit" value="Submit">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}

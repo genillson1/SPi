@@ -27,7 +27,7 @@ def update(request, id):
     return redirect(home)
 
 
-def delete(request, id):
+def delete(id):
     Categorias = Categoria.objects.get(id=id)
     Categorias.delete()
     return redirect(home)
@@ -48,6 +48,39 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
+def listas(request):
+    listas = Lista.objects.all
+    context = {
+        'listas': listas,
+    }
+    return render(request, 'listas.html', context)
+
+
+def receitas(request):
+    produtos = Produto.objects.all
+    listas = Lista.objects.all
+    categorias = Categoria.objects.all
+    tagReceita = TagReceita.objects.all
+    receitas = Receita.objects.all
+    context = {
+        'produtos': produtos,
+        'listas': listas,
+        'categorias': categorias,
+        'tagReceita': tagReceita,
+        'receitas': receitas,
+    }
+    return render(request, 'receitas.html', context)
+
+def page_produto(request):
+    produtos = Produto.objects.all()
+    categoria = Categoria.objects.all()
+    context = {
+        "produtos": produtos,
+        "categoria": categoria,
+    }
+
+    return render (request,'produtos.html', context)
+
 def add_produto(request):
     if request.method == 'POST':
         nome = request.POST['nome']
@@ -59,24 +92,36 @@ def add_produto(request):
             categoria = categoria
         )
         data.save()
-    return HttpResponseRedirect('/')
+    return redirect(page_produto)
 
 def delete_produto(request, pk):
     produto = Produto.objects.get(id = pk)
     produto.delete()
-    return HttpResponseRedirect('/') 
+    return HttpResponseRedirect('/produtos/') 
+
+def show_produto(request,pk):
+    produto = Produto.objects.get(id = pk)
+    categoria = Categoria.objects.all()
+    context = {
+        "produto": produto,
+        "categoria": categoria
+    }
+    return render(request, 'edit_produto.html', context)
 
 
-def edit_produto(request):
+
+def edit_produto(request,pk):
     if request.method == 'POST':
-        produto = Produto.objects.get(id = request.POST['id'])
+        produto = Produto.objects.get(id = pk)
         produto.nome = request.POST['nome']
         produto.descricao = request.POST['descricao']
         categoria = Categoria.objects.get(id = request.POST['categoria'])
+
         produto.categoria = categoria
         produto.save()
-    return HttpResponseRedirect('/') 
 
+        return redirect(page_produto)
+    
 def add_lista(request):
     if request.method == 'POST':
         nome = request.POST['nome']
@@ -84,24 +129,23 @@ def add_lista(request):
             nome = nome,
         )
         data.save()
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/listas/')
 
-def delete_lista(request, pk):
-    lista = Lista.objects.get(id = pk)
+def delete_lista(request,pk):
+    lista = Lista.objects.filter(id = pk)
     lista.delete()
     return HttpResponseRedirect('/listas/') 
 
-
-def edit_lista(request):
+def edit_lista(request,pk):
     if request.method == 'POST':
-        lista = Lista.objects.get(id = request.POST['id'])
+        lista = Lista.objects.get(id = pk)
         lista.nome = request.POST['nome']
         lista.save()
-    return HttpResponseRedirect('/') 
+    return redirect(listas) 
 
-def add_prod_in_lista(request):
+def add_prod_in_lista(request, pk):
     if request.method == 'POST':
-        lista = Lista.objects.get(id = request.POST['idLista'])
+        lista = Lista.objects.get(id = pk)
         produto = Produto.objects.get(id = request.POST['idProduto'])
         quantidade = request.POST['quantidade']
         second_option = Produto.objects.get(id = request.POST['idSecondOption'])
@@ -113,48 +157,54 @@ def add_prod_in_lista(request):
             produto_second_option = second_option,
             importancia = importancia,
         )
-        data.save()
-    return HttpResponseRedirect('/')
-
+        data.save() 
+    return HttpResponseRedirect('/show_lista/'+str(pk)+'/')
 
 def show_lista(request,pk):
     lista_produto = Lista_produto.objects.filter(lista__id=pk)
+    lista = Lista.objects.get(id=pk)
+    produto = Produto.objects.all()
+
     context = {
         'lista_produto': lista_produto,
+        'lista': lista,
+        'produto': produto,
+        'pk':pk,
     }
-    return render(request, 'verLista.html', context)
+    return render(request, 'edit_lista.html', context)
 
 def add_receita(request):
     if request.method == 'POST':
         nome = request.POST['nome']
         print(nome)
         descricao = request.POST['descricao']
-  
+        
         data = Receita(
             nome = nome,
             descricao = descricao,
             
         )
         data.save()
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/receitas/')
 
 def delete_receita(request, pk):
     receita = Receita.objects.get(id = pk)
     receita.delete()
-    return HttpResponseRedirect('/') 
+    return HttpResponseRedirect('/receitas/')  
 
-def edit_receita(request):
+def edit_receita(request, pk):
     if request.method == 'POST':
-        receita = Receita.objects.get(id = request.POST['id'])
+        receita = Receita.objects.get(id = pk)
         receita.nome = request.POST['nome']
         receita.descricao = request.POST['descricao']
+       
         receita.save()
-    return HttpResponseRedirect('/')
+    return redirect(receitas)
 
 
-def add_prod_in_receita(request):
+def add_prod_in_receita(request, pk):
     if request.method == 'POST':
-        receita = Receita.objects.get(id = request.POST['idReceita'])
+        receita = Receita.objects.get(id = pk)
         produto = Produto.objects.get(id = request.POST['idProduto'])
         quantidade = request.POST['quantidade']
         data = ProdutoReceita(
@@ -163,27 +213,39 @@ def add_prod_in_receita(request):
             quantidade = quantidade,
         )
         data.save()
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/showReceita/'+str(pk)+'/')
 
 
 def show_receita(request,pk):
     receitaProduto = ProdutoReceita.objects.filter(receita__id=pk)
+    receita = Receita.objects.get(id=pk)
+    produto = Produto.objects.all()
     context = {
         'receitaProduto': receitaProduto,
+        'receita': receita,
+        'produto': produto,
+        'pk':pk,
     }
-    return render(request, 'showReceita.html', context)
+    return render(request, 'edit_receita.html', context)
+
+def page_mercado(request):
+    supermercado = Supermercado.objects.all()
+
+    context={
+            'supermercado': supermercado,
+        }
+    return render (request,'mercados.html', context)
 
 def add_mercado(request):
     if request.method == 'POST':
         nome = request.POST['nome']
-        print(nome)
         endereco = request.POST['endereco']
-  
-        data = Supermercado(
-            nome = nome,
-            endereco = endereco,
-            
-        )
-        data.save()
-    return HttpResponseRedirect('/')
+        supermercado = Supermercado.objects.all()
 
+        context={
+            'supermercado': supermercado,
+        }
+
+        Supermercado.objects.create(nome=nome,endereco=endereco)
+      
+    return redirect('page_mercado')

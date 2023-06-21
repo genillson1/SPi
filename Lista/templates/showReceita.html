@@ -1,7 +1,42 @@
 
-<ul>
-{% for Produtos in receitaProduto %}
-    <li> {{prod.produtos.nome}} - {{produtos.quantidade}}
-     </li>
-{% endfor %}
-</ul>
+{% extends 'main.html' %}
+
+{% block content %}
+{{receita.nome}} - Add receita: <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#ModalProduct" onclick="showModal()"><i class="fa fa-plus"></i></button><p></p>
+    <ul>
+    {% for produto in ProdutoReceita %}
+        <li> {{produto.produto.nome}} - {{produto.quantidade}}</li>
+    {% endfor %}
+    </ul>
+
+    <div class="modal fade" id="ModalProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add Produto in Receita</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <form action="/add_prod_in_receita/{{receita.id}}/" method="post">
+                    {% csrf_token %}
+                    <select class="form-control mb-4" name="idProduto">
+                        <option selected disabled>Select Produto</option>
+                
+                        {% for produto in produtos %}
+                        <option value="{{produto.id}}">{{produto.nome}}</option>
+                        {% endfor %}
+                    </select>
+                    <label for="nome"> Quantidade:</label>
+                    <input id="quantidade" type="text" name="quantidade" value=""><p></p>
+                    <input type="submit" value="Submit">
+                </form>
+    
+    
+    
+            </div>
+          </div>
+        </div>
+    </div>
+{% endblock content %}

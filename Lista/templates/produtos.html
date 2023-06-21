@@ -1,0 +1,52 @@
+{% extends 'main.html' %}
+
+{% block content %}
+Novo produto: <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#ModalList"
+  onclick="showModal()"><i class="fa fa-plus"></i></button>
+<ul>
+  {% for produto in produtos %}
+  <li>
+    <a href="{% url 'page_produto' %}">{{produto.nome}} - {{produto.descricao}} - {{produto.categoria}} </a> -
+    <a class="btn btn-outline-danger" href="{% url 'delete_produto' pk=produto.id %}">Delete</a>
+    <a class="btn btn-outline-danger" href="{% url 'show_produto' pk=produto.id %}">EDITAR</a>
+  </li>
+  {% endfor %}
+  <ul>
+
+    <div class="modal fade" id="ModalList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Novo produto</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="/add_produto/" method="post">
+              {% csrf_token %}
+              <label for="nome"> Nome:</label>
+              <input id="nome" type="text" name="nome" value="">
+              <p>
+
+              <label for="nome"> Descricao:</label>
+              <input id="nome" type="text" name="descricao" value="">
+              <p>
+
+              <select class="form-control mb-4" name="categoria">
+                <option selected disabled>Select Categoria</option>
+                {% for categoria in categoria %}
+                <option value="{{categoria.id}}">{{categoria.nome}}</option>
+                {% endfor %}
+              </select>
+
+              <input type="submit" value="Submit">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    {% endblock content %}

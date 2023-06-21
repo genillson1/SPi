@@ -1,0 +1,41 @@
+{% extends 'main.html' %}
+
+{% block content %}
+Editar receita: <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#ModalList" onclick="showModal()"><i class="fa fa-plus"></i></button>
+<ul>
+    {% for receita in receitas %}
+        <li> <a href="{% url 'add_receita' pk=receita.id %}">{{receita.id}} {{receita.nome}} </a> - 
+            <a class="btn btn-outline-danger" href="{% url 'edit_receita' pk=receita.id %}">EDITAR</a>
+        </li>
+    {% endfor %}
+    </ul>
+
+
+    
+<div class="modal fade" id="ModalList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Editar receita {{ receita.nome }}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="/edit_receita/{{pk}}/" method="post">
+                {% csrf_token %}
+                <label for="id"> Id:</label>
+                <input id="id" type="text" name="id" value="">
+                <label for="nome"> Nome:</label>
+                <input id="nome" type="text" name="nome" value="">
+                <label for="desc"> Descrição:</label>
+                <input id="desc" type="text" name="descricao" value="">
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock content %}

@@ -1,0 +1,31 @@
+<style>
+    .topnav {
+      overflow: hidden;
+      background-color: #83e556;
+    }
+    .topnav a {
+      float: left;
+      color: #c37e7e;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+    }
+    .topnav a:hover {
+      background-color: #8d7d7d;
+      color: black;
+    }
+    .topnav a.active {
+      background-color: #0a3919c6;
+      color: rgb(10, 17, 39);
+    }
+    </style>
+    
+     <div class="topnav">
+        <a {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %} href="{% url 'index' %}"> <img src="Imagens/app_mercado.jpg" style="width:60px;height:36px;"> </a>
+        <a {% if request.resolver_match.url_name == 'listas' %}class="active"{% endif %} href="{% url 'listas' %}">Listas</a>
+        <a {% if request.resolver_match.url_name == 'receitas' %}class="active"{% endif %} href="{% url 'receitas' %}">Receitas</a>
+        <a {% if request.resolver_match.url_name == 'produtos' %}class="active"{% endif %} href="{% url 'page_produto' %}">Produtos</a>
+        <a {% if request.resolver_match.url_name == 'supermercados' %}class="active"{% endif %} href="{% url 'page_mercado' %}">Supermercados</a>
+      </div> 
+    <hr>

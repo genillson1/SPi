@@ -1,0 +1,48 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+
+
+
+
+Nova Receita: <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#ModalList" onclick="showModal()"><i class="fa fa-plus"></i></button>
+
+<ul>
+  {% for receita in receitas %}
+  <li> <a href="{% url 'add_receita' %}"> {{receita.nome}} - {{receita.descricao}} </a> -
+       <a class="btn btn-outline-danger" href="{% url 'delete_receita' pk=receita.id %}">Delete</a>
+       <a class="btn btn-outline-danger" href="{% url 'show_receita' pk=receita.id %}">EDITAR</a>
+  </li>
+  {% endfor %}
+</ul>
+
+<div class="modal fade" id="ModalList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nova Receita</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/add_receita/" method="post">
+          {% csrf_token %}
+          <label for="nome"> Nome:</label>
+          <input id="nome" type="text" name="nome" value="">
+          <p>
+            <label for="descricao">Descrição: </label>
+            <input id="descricao" type="text" name="descricao" value="">
+          <p>
+
+            <input type="submit" value="Submit">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}
