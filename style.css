@@ -1,0 +1,316 @@
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Arial', sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #ff2b05;
+  padding: 20px;
+  text-align: center;
+  color: white;
+}
+
+h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+#search {
+  margin-top: 10px;
+  padding: 8px;
+  font-size: 16px;
+  width: 80%;
+  max-width: 400px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Container de Pokémon */
+.pokemon-container {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+  gap: 15px;
+}
+
+/* Estilo do card de Pokémon */
+.pokemon-card {
+  align-items: center;
+  background: #f4f4f4;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  border-left: 6px solid #ddd;
+  display: flex;
+  font-family: Arial, sans-serif;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  margin: 10px;
+  padding: 20px;
+  overflow: hidden;
+  width: 250px;
+  text-align: center;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s, border 0.3s;
+  padding-right: 10px;
+  position: relative;
+}
+
+.pokemon-card:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  border-left-color: #ff2b05;
+}
+
+.pokemon-card img {
+  max-width: 100%;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  width: 100px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Nome do Pokémon */
+.pokemon-card h3 {
+  margin: 5px 0;
+  font-size: rem;
+  color: #333;
+  text-transform: capitalize;
+}
+
+/* Informações básicas */
+.pokemon-card p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.pokemon-card p strong {
+  color: #222;
+}
+
+.pokemon-card p:first-of-type {
+  font-weight: bold;
+  color: #888;
+  font-size: 12px;
+}
+
+.pokemon-card p:nth-of-type(2) {
+  background: rgba(255, 255, 255, 0.5);
+  padding: 5px;
+  border-radius: 5px;
+  display: inline-block;
+  font-weight: bold;
+}
+
+/* Estilo para as evoluções */
+.evolutions {
+  align-items: center;
+  margin-top: 15px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  text-align: center;
+  overflow: visible;
+  width: 100%;
+  max-height: fit-content;
+}
+
+.evolution {
+  display: flex;
+  text-align: center;
+  flex-direction: column; /* Organiza os itens verticalmente */
+  align-items: center; /* Centraliza os itens horizontalmente */
+  text-align: center; /* Centraliza o texto */
+  position: relative;
+  margin-right: 10px;
+  min-width: 100px;
+  flex: 1;
+}
+
+.evolution img {
+  display: inline-block;
+  max-width: 60px;
+  margin: auto; 
+  height: 60px;
+  object-fit: contain;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.evolution h5 {
+  font-size: 14px;
+  color: #333;
+  margin-top: 5px;
+  text-align: center;
+}
+
+/* Estilo para a seta */
+.evolution::after {
+  content: ""; /* Cria um pseudo-elemento */
+  position: absolute; /* Posiciona a seta absolutamente */
+  top: 50%; /* Centraliza verticalmente */
+  left: 100%; /* Posiciona à direita do elemento .evolution */
+  transform: translateY(-50%); /* Ajusta o posicionamento vertical */
+  border-top: 8px solid transparent; /* Cria a ponta da seta */
+  border-bottom: 8px solid transparent; /* Cria a ponta da seta */
+  border-left: 10px solid #582baced; /* Define a cor e o tamanho da seta */
+}
+
+/* Remove a seta do último elemento */
+.evolution:last-child::after {
+  display: none;
+}
+
+/* Estilo das estatísticas */
+.pokemon-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  margin-top: 10px auto;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 8px;
+  width: 90%;
+  max-width: 300px;
+}
+
+.stat {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background: #f2f2f2;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.stat strong {
+  color: #ff2b05;
+}
+
+/* Rodapé */
+footer {
+  background-color: #ff2b05;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  max-height: 680px;
+  max-width: 18%;
+  position: relative;
+  overflow: overlay;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  padding-right: 10px;
+}
+
+.modal-content > *:not(:last-child) { /* Espaçamento entre os elementos do modal */
+  margin-bottom: 10px;
+}
+
+.modal img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: rgba(0, 0, 0, 0.5); /* Fundo semi-transparente */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; /* Largura e altura fixas */
+  height: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s; /* Transição de cor */
+}
+
+.close-button:hover {
+  background: rgba(0, 0, 0, 0.7); /* Fundo mais escuro no hover */
+}
+
+/* Botão de carregar mais */
+#load-more {
+  text-align: center;
+  display: block;
+  margin: 20px auto;
+  padding: 12px 0;
+  background: #6a0dad;
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background 0.3s, transform 0.2s;
+  cursor: pointer;
+  border: none;
+  width: 250px;
+}
+
+#load-more:hover {
+  background: #5a0dad;
+  transform: scale(1.05);
+}
+
+/* Bordas coloridas conforme o tipo */
+.type-grass { border-left-color: #78C850; }  
+.type-fire { border-left-color: #F08030; }   
+.type-water { border-left-color: #6890F0; }  
+.type-electric { border-left-color: #F8D030; } 
+.type-psychic { border-left-color: #F85888; }  
+.type-ice { border-left-color: #98D8D8; }    
+.type-dragon { border-left-color: #7038F8; } 
+.type-dark { border-left-color: #705848; }   
+.type-fairy { border-left-color: #EE99AC; }  
+.type-normal { border-left-color: #A8A878; } 
+.type-fighting { border-left-color: #C03028; } 
+.type-flying { border-left-color: #A890F0; } 
+.type-poison { border-left-color: #A040A0; } 
+.type-ground { border-left-color: #E0C068; } 
+.type-rock { border-left-color: #B8A038; }   
+.type-bug { border-left-color: #A8B820; }    
+.type-ghost { border-left-color: #705898; }  
+.type-steel { border-left-color: #B8B8D0; }
